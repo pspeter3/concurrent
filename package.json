@@ -21,5 +21,8 @@
   "author": "Phips Peter",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "de0a26f9add46f5687715e848f93d915680ae728"
+  "gitHead": "de0a26f9add46f5687715e848f93d915680ae728",
+  "devDependencies": {
+    "promises-aplus-tests": "*"
+  }
 }
