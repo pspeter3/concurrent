@@ -90,7 +90,17 @@ describe('Future API', function() {
     expect(future).to.have.property('withFilter');
   });
 
-  it('should have zip', function() {
+  it('should have zip', function(done) {
     expect(future).to.have.property('zip');
+    var other = new Future();
+    var zipped = future.zip(other);
+    
+    zipped.then(function(tuple) {
+      expect(tuple).to.eql(['a', 'b']);
+      done();
+    });
+
+    future.fulfill('a');
+    other.fulfill('b');
   });
 });
