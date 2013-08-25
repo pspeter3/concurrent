@@ -2,20 +2,46 @@ var expect = require('chai').expect;
 var Future = require('../lib/future');
 
 var future;
+var SUCCESS = 'success';
+var ERROR = 'error';
+
 describe('Future API', function() {
   beforeEach(function() {
     future = new Future();
   });
 
-  it('should have isComplete', function() {
-    expect(future).to.have.property('isCompleted');
-    expect(future.isCompleted()).to.be.false;
-    future.fulfill('success');
-    expect(future.isCompleted()).to.be.true;
-  });
+  describe('#isCompleted', function() {
+    it('should have isCompleted', function() {
+      expect(future).to.have.property('isCompleted');
+    });
 
-  it('should have onComplete', function() {
-    expect(future).to.have.property('onComplete');
+    it('should work as expected', function() {
+      expect(future.isCompleted()).to.be.false;
+      future.fulfill(SUCCESS);
+      expect(future.isCompleted()).to.be.true;
+    });
+  })
+
+  describe('#onComplete', function() {
+    it('should have onComplete', function() {
+      expect(future).to.have.property('onComplete');
+    });
+
+    it('should call on success', function(done) {
+      future.onComplete(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+      future.fulfill(SUCCESS);
+    });
+
+    it('should call on error', function(done) {
+      future.onComplete(function(value) {
+        expect(value).to.eql(ERROR);
+        done();
+      });
+      future.reject(ERROR);
+    });
   });
 
   it('should have ready', function() {
@@ -43,7 +69,7 @@ describe('Future API', function() {
   });
 
   it('should have fallbackTo', function() {
-    expect(future).to.have.property('onComplete');
+    expect(future).to.have.property('fallbackTo');
   });
 
   it('should have filter', function() {
@@ -90,17 +116,22 @@ describe('Future API', function() {
     expect(future).to.have.property('withFilter');
   });
 
-  it('should have zip', function(done) {
-    expect(future).to.have.property('zip');
-    var other = new Future();
-    var zipped = future.zip(other);
-    
-    zipped.then(function(tuple) {
-      expect(tuple).to.eql(['a', 'b']);
-      done();
+  describe('#zip', function() {
+    it('should have zip', function() {
+      expect(future).to.have.property('zip');
     });
 
-    future.fulfill('a');
-    other.fulfill('b');
+    it('should combine two futures into a tuple', function(done) {
+      var other = new Future();
+      var zipped = future.zip(other);
+
+      zipped.then(function(tuple) {
+        expect(tuple).to.eql([SUCCESS, ERROR]);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+      other.fulfill(ERROR);
+    });
   });
 });
