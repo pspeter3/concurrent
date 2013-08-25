@@ -1,9 +1,17 @@
-var expect = require('chai').expect;
+var chai = require('chai');
 var Future = require('../lib/future');
+var spies = require('chai-spies');
+
+chai.use(spies);
+var expect = chai.expect;
 
 var future;
+
 var SUCCESS = 'success';
 var ERROR = 'error';
+
+var ZERO = 0;
+var ONE = 1;
 
 describe('Future API', function() {
   beforeEach(function() {
@@ -84,8 +92,35 @@ describe('Future API', function() {
     expect(future).to.have.property('forEach');
   });
 
-  it('should have map', function() {
-    expect(future).to.have.property('map');
+  describe('#map', function() {
+    it('should have map', function() {
+      expect(future).to.have.property('map');
+    });
+
+    it('should work on success', function(done) {
+      var mapped = future.map(function(value) {
+        return value + 1;
+      });
+
+      mapped.then(function(value) {
+        expect(value).to.eql(ONE);
+        done();
+      });
+
+      future.fulfill(ZERO);
+    });
+
+    it('should not be called on error', function(done) {
+      var spy = chai.spy(function() {});
+      var mapped = future.map(spy);
+
+      future.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.reject(ERROR);
+    });
   });
 
   it('should have mapTo', function() {
@@ -132,6 +167,38 @@ describe('Future API', function() {
 
       future.fulfill(SUCCESS);
       other.fulfill(ERROR);
+    });
+
+    it('should not be called if the left future fails', function(done) {
+      var other = new Future();
+      var zipped = future.zip(other);
+      var spy = chai.spy(function() {});
+
+      zipped.then(spy);
+
+      future.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.reject(ERROR);
+      other.fulfill(SUCCESS);
+    });
+
+    it('should not be called if the right future fails', function(done) {
+      var other = new Future();
+      var zipped = future.zip(other);
+      var spy = chai.spy(function() {});
+
+      zipped.then(spy);
+
+      other.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+      other.reject(ERROR);
     });
   });
 });

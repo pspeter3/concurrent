@@ -25,6 +25,7 @@
   "devDependencies": {
     "promises-aplus-tests": "*",
     "mocha": "~1.12.0",
-    "chai": "~1.7.2"
+    "chai": "~1.7.2",
+    "chai-spies": "~0.5.1"
   }
 }
