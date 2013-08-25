@@ -63,8 +63,15 @@ describe('Future API', function() {
     expect(future).to.have.property('result');
   });
 
-  it('should have value', function() {
-    expect(future).to.have.property('value');
+  describe('#value', function() {
+    it('should not have value before being fulfilled', function() {
+      expect(future).to.not.have.property('value');
+    });
+
+    it('should have value', function() {
+      future.fulfill(SUCCESS);
+      expect(future).to.have.property('value');
+    });
   });
 
   it('should have andThen', function() {
