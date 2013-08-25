@@ -10,6 +10,9 @@ var future;
 var SUCCESS = 'success';
 var ERROR = 'error';
 
+var LEFT = 'left';
+var RIGHT = 'right';
+
 var ZERO = 0;
 var ONE = 1;
 
@@ -76,8 +79,65 @@ describe('Future API', function() {
     expect(future).to.have.property('failed');
   });
 
-  it('should have fallbackTo', function() {
-    expect(future).to.have.property('fallbackTo');
+  describe('#fallbackTo', function() {
+    it('should have fallbackTo', function() {
+      expect(future).to.have.property('fallbackTo');
+    });
+
+    it('should return the value of left if left succeeds', function(done) {
+      var other = new Future();
+      var fallen = future.fallbackTo(other);
+
+      fallen.then(function(value) {
+        expect(value).to.eql(LEFT);
+        done();
+      });
+
+      future.fulfill(LEFT);
+      other.reject(ERROR);
+    });
+
+    it('should return the value of left if left succeeds even if right succeeds', function(done) {
+      var other = new Future();
+      var fallen = future.fallbackTo(other);
+
+      fallen.then(function(value) {
+        expect(value).to.eql(LEFT);
+        done();
+      });
+
+      future.fulfill(LEFT);
+      other.fulfill(RIGHT);
+    });
+
+    it('should return the value of right if left fails', function(done) {
+      var other = new Future();
+      var fallen = future.fallbackTo(other);
+
+      fallen.then(function(value) {
+        expect(value).to.eql(RIGHT);
+        done();
+      });
+
+      future.reject(ERROR);
+      other.fulfill(RIGHT);
+    });
+
+    it('should not be called if both fail', function(done) {
+      var other = new Future();
+      var fallen = future.fallbackTo(other);
+      var spy = chai.spy(function() {});
+
+      fallen.then(spy);
+
+      future.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+      
+      future.reject(ERROR);
+      other.reject(ERROR);
+    });
   });
 
   it('should have filter', function() {
@@ -161,12 +221,12 @@ describe('Future API', function() {
       var zipped = future.zip(other);
 
       zipped.then(function(tuple) {
-        expect(tuple).to.eql([SUCCESS, ERROR]);
+        expect(tuple).to.eql([LEFT, RIGHT]);
         done();
       });
 
-      future.fulfill(SUCCESS);
-      other.fulfill(ERROR);
+      future.fulfill(LEFT);
+      other.fulfill(RIGHT);
     });
 
     it('should not be called if the left future fails', function(done) {
