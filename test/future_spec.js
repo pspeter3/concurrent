@@ -215,8 +215,32 @@ describe('Future API', function() {
     });
   });
 
-  it('should have onSuccess', function() {
-    expect(future).to.have.property('onSuccess');
+  describe('#onSuccess', function() {
+    it('should have onSuccess', function() {
+      expect(future).to.have.property('onSuccess');
+    });
+
+    it('should be called on success', function(done) {
+      future.onSuccess(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should not be called on error', function(done) {
+      var spy = chai.spy(function() {});
+
+      future.onSuccess(spy);
+
+      future.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.reject(ERROR);
+    });
   });
 
   it('should have recover', function() {
