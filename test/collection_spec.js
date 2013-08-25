@@ -174,7 +174,7 @@ describe('collections', function() {
       expect(collections).to.have.property('reduceRight');
     });
 
-        it('should apply to all the elements', function(done) {
+    it('should apply to all the elements', function(done) {
       var transform = function(previous, element) {
         return element * 2;
       };
