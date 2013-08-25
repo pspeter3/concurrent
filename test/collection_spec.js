@@ -5,7 +5,10 @@ var spies = require('chai-spies');
 chai.use(spies);
 var expect = chai.expect;
 
-var list = [0, 1, 2];
+var list = [];
+for (var i = 0; i < 1000; i++) {
+  list.push(i);
+};
 var err = new Error();
 
 describe('collections', function() {
@@ -27,7 +30,7 @@ describe('collections', function() {
 
     it('should reject if the iterator throws an error', function(done) {
       var iterator = collections.forEach(list, function() {
-        throw(err);
+        throw (err);
       });
 
       iterator.then(null, function(reason) {
@@ -133,15 +136,54 @@ describe('collections', function() {
     });
   });
 
+  describe('#reverse', function() {
+    it('should have reverse', function() {
+      expect(collections).to.have.property('reverse');
+    });
+
+    it('should apply to all the elements', function(done) {
+      var reversed = collections.reverse(list);
+
+      reversed.then(function(value) {
+        expect(value).to.eql(list.reverse());
+        done();
+      });
+    });
+  });
+
   describe('#reduce', function() {
     it('should have reduce', function() {
       expect(collections).to.have.property('reduce');
+    });
+
+    it('should apply to all the elements', function(done) {
+      var transform = function(previous, element) {
+        return element * 2;
+      };
+      var reduced = collections.reduce(list, transform);
+
+      reduced.then(function(value) {
+        expect(value).to.eql(list.reduce(transform));
+        done();
+      });
     });
   });
 
   describe('#reduceRight', function() {
     it('should have reduceRight', function() {
       expect(collections).to.have.property('reduceRight');
+    });
+
+        it('should apply to all the elements', function(done) {
+      var transform = function(previous, element) {
+        return element * 2;
+      };
+      var reduced = collections.reduceRight(list, transform);
+
+      reduced.then(function(value) {
+        expect(value).to.eql(list.reduceRight(transform));
+        done();
+      });
     });
   });
 });
