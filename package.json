@@ -1,6 +1,6 @@
 {
   "name": "concurrent",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Promises/A+ with Scala awesomeness",
   "main": "index.js",
   "scripts": {
