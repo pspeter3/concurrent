@@ -1,10 +1,10 @@
 {
   "name": "concurrent",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Promises/A+ with Scala awesomeness",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*_spec.js --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,9 @@
   "author": "Phips Peter",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "de0a26f9add46f5687715e848f93d915680ae728"
+  "gitHead": "de0a26f9add46f5687715e848f93d915680ae728",
+  "devDependencies": {
+    "promises-aplus-tests": "*",
+    "mocha": "~1.12.0"
+  }
 }
