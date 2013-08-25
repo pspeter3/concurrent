@@ -24,6 +24,7 @@
   "gitHead": "de0a26f9add46f5687715e848f93d915680ae728",
   "devDependencies": {
     "promises-aplus-tests": "*",
-    "mocha": "~1.12.0"
+    "mocha": "~1.12.0",
+    "chai": "~1.7.2"
   }
 }
