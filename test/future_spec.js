@@ -198,10 +198,6 @@ describe('Future API', function() {
     });
   });
 
-  it('should have mapTo', function() {
-    expect(future).to.have.property('mapTo');
-  });
-
   describe('#onFailure', function() {
     it('should have onFailure', function() {
       expect(future).to.have.property('onFailure');
