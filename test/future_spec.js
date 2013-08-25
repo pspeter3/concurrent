@@ -297,10 +297,6 @@ describe('Future API', function() {
     expect(future).to.have.property('recover');
   });
 
-  it('should have recoverWith', function() {
-    expect(future).to.have.property('recoverWith');
-  });
-
   describe('#transform', function() {
     it('should have transform', function() {
       expect(future).to.have.property('transform');
