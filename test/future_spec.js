@@ -94,10 +94,6 @@ describe('Future API', function() {
     });
   });
 
-  it('should have failed', function() {
-    expect(future).to.have.property('failed');
-  });
-
   describe('#fallbackTo', function() {
     it('should have fallbackTo', function() {
       expect(future).to.have.property('fallbackTo');
@@ -293,8 +289,32 @@ describe('Future API', function() {
     });
   });
 
-  it('should have recover', function() {
-    expect(future).to.have.property('recover');
+  describe('#recover', function() {
+    it('should have recover', function() {
+      expect(future).to.have.property('recover');
+    });
+
+    it('should be called with the normal future value', function(done) {
+      var recovered = future.recover(RIGHT);
+
+      recovered.then(function(value) {
+        expect(value).to.eql(LEFT);
+        done();
+      });
+
+      future.fulfill(LEFT);
+    });
+
+    it('should be called with value on error', function(done) {
+      var recovered = future.recover(RIGHT);
+
+      recovered.then(function(value) {
+        expect(value).to.eql(RIGHT);
+        done();
+      });
+
+      future.reject(LEFT);
+    });
   });
 
   describe('#transform', function() {
