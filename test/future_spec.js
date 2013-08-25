@@ -206,11 +206,6 @@ describe('Future API', function() {
     });
   });
 
-
-  it('should have flatMap', function() {
-    expect(future).to.have.property('flatMap');
-  });
-
   describe('#map', function() {
     it('should have map', function() {
       expect(future).to.have.property('map');
