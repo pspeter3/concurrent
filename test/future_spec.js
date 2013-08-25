@@ -94,10 +94,6 @@ describe('Future API', function() {
     });
   });
 
-  it('should have collect', function() {
-    expect(future).to.have.property('collect');
-  });
-
   it('should have failed', function() {
     expect(future).to.have.property('failed');
   });
