@@ -14,3 +14,8 @@ like to thank:
 - [cujos/when](https://github.com/cujojs/when) for fully featured examples
 - [aheckmann/mpromise](https://github.com/aheckmann/mpromise) for node.js specific implementation
 - [promises-aplus/promises-tests](https://github.com/promises-aplus/promises-tests) for the test suite
+
+License
+-------
+
+This is licensed under the MIT license. See the LICENSE file
