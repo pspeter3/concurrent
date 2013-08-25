@@ -1,4 +1,7 @@
+var chai = require('chai');
 var collections = require('../lib/collections');
+
+var expect = chai.expect;
 
 describe('collections', function() {
   describe('#forEach', function() {
@@ -16,6 +19,28 @@ describe('collections', function() {
   describe('#some', function() {
     it('should have some', function() {
       expect(collections).to.have.property('some');
+    });
+
+    it('should return true if any match', function(done) {
+      var some = collections.some([1, 2], function(num) {
+        return num === 1;
+      });
+
+      some.then(function(value) {
+        expect(value).to.be.true;
+        done();
+      });
+    });
+
+    it('should return false if none match', function(done) {
+      var some = collections.some([1, 2], function(num) {
+        return num === 0;
+      });
+
+      some.then(function(value) {
+        expect(value).to.be.false;
+        done();
+      });
     });
   });
 
