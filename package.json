@@ -4,7 +4,7 @@
   "description": "Promises/A+ with Scala awesomeness",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*_spec.js"
+    "test": "mocha test/*_spec.js --reporter spec"
   },
   "repository": {
     "type": "git",
