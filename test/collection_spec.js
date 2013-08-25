@@ -1,18 +1,69 @@
 var chai = require('chai');
 var collections = require('../lib/collections');
+var spies = require('chai-spies');
 
+chai.use(spies);
 var expect = chai.expect;
+
+var list = [0, 1, 2];
+var err = new Error();
 
 describe('collections', function() {
   describe('#forEach', function() {
     it('should have forEach', function() {
       expect(collections).to.have.property('forEach');
     });
+
+    it('should be fulfilled with the number of elements', function(done) {
+      var spy = chai.spy(function() {});
+      var iterator = collections.forEach(list, spy);
+
+      iterator.then(function(value) {
+        expect(value).to.eql(list.length);
+        expect(spy).to.have.been.called.exactly(list.length);
+        done();
+      });
+    });
+
+    it('should reject if the iterator throws an error', function(done) {
+      var iterator = collections.forEach(list, function() {
+        throw(err);
+      });
+
+      iterator.then(null, function(reason) {
+        expect(reason).to.eql(err);
+        done();
+      });
+    });
   });
 
   describe('#every', function() {
     it('should have every', function() {
       expect(collections).to.have.property('every');
+    });
+
+    it('should return true if all match', function(done) {
+      var predicate = function(num) {
+        return num >= 0;
+      };
+      var every = collections.every(list, predicate);
+
+      every.then(function(value) {
+        expect(value).to.eql(list.every(predicate));
+        done();
+      });
+    });
+
+    it('should return false if some do not match', function(done) {
+      var predicate = function(num) {
+        return num > 0;
+      };
+      var every = collections.every(list, predicate);
+
+      every.then(function(value) {
+        expect(value).to.eql(list.every(predicate));
+        done();
+      });
     });
   });
 
@@ -22,23 +73,25 @@ describe('collections', function() {
     });
 
     it('should return true if any match', function(done) {
-      var some = collections.some([1, 2], function(num) {
+      var predicate = function(num) {
         return num === 1;
-      });
+      }
+      var some = collections.some(list, predicate);
 
       some.then(function(value) {
-        expect(value).to.be.true;
+        expect(value).to.eql(list.some(predicate));
         done();
       });
     });
 
     it('should return false if none match', function(done) {
-      var some = collections.some([1, 2], function(num) {
-        return num === 0;
-      });
+      var predicate = function(num) {
+        return num === -1;
+      }
+      var some = collections.some(list, predicate);
 
       some.then(function(value) {
-        expect(value).to.be.false;
+        expect(value).to.eql(list.some(predicate));
         done();
       });
     });
@@ -48,11 +101,35 @@ describe('collections', function() {
     it('should have filter', function() {
       expect(collections).to.have.property('filter');
     });
+
+    it('should filter the elements', function(done) {
+      var predicate = function(element) {
+        return element > 1;
+      }
+      var filtered = collections.filter(list, predicate);
+
+      filtered.then(function(value) {
+        expect(value).to.eql(list.filter(predicate));
+        done();
+      });
+    });
   });
 
   describe('#map', function() {
     it('should have map', function() {
       expect(collections).to.have.property('map');
+    });
+
+    it('should apply to all the elements', function(done) {
+      var transform = function(element) {
+        return element * 2;
+      };
+      var mapped = collections.map(list, transform);
+
+      mapped.then(function(value) {
+        expect(value).to.eql(list.map(transform));
+        done();
+      });
     });
   });
 
@@ -62,7 +139,7 @@ describe('collections', function() {
     });
   });
 
-    describe('#reduceRight', function() {
+  describe('#reduceRight', function() {
     it('should have reduceRight', function() {
       expect(collections).to.have.property('reduceRight');
     });
