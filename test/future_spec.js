@@ -94,10 +94,6 @@ describe('Future API', function() {
     });
   });
 
-  it('should have andThen', function() {
-    expect(future).to.have.property('andThen');
-  });
-
   it('should have collect', function() {
     expect(future).to.have.property('collect');
   });
