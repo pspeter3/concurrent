@@ -275,8 +275,34 @@ describe('Future API', function() {
     expect(future).to.have.property('recoverWith');
   });
 
-  it('should have transform', function() {
-    expect(future).to.have.property('transform');
+  describe('#transform', function() {
+    it('should have transform', function() {
+      expect(future).to.have.property('transform');
+    });
+
+    it('should be called on success', function(done) {
+      var spy = chai.spy(function() {});
+
+      var transformed = future.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        expect(spy).to.have.been.not_called;
+        done();
+      }, spy);
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should be called on failure', function(done) {
+      var spy = chai.spy(function() {});
+
+      var transformed = future.then(spy, function(reason) {
+        expect(reason).to.eql(ERROR);
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.reject(ERROR);
+    });
   });
 
   it('should have withFilter', function() {
