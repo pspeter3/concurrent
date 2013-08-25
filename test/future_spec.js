@@ -55,12 +55,32 @@ describe('Future API', function() {
     });
   });
 
-  it('should have ready', function() {
-    expect(future).to.have.property('ready');
-  });
+  describe('#ready', function() {
+    it('should have ready', function() {
+      expect(future).to.have.property('ready');
+    });
 
-  it('should have result', function() {
-    expect(future).to.have.property('result');
+    it('should be called with value if it succeeds on time', function(done) {
+      var readied = future.ready(1000);
+
+      readied.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should be called with error if it does not succeed', function(done) {
+      var readied = future.ready(10);
+      var spy = chai.spy(function() {});
+
+      readied.then(null, spy);
+      readied.then(null, function() {
+        expect(spy).to.have.been.called;
+        done();
+      });
+    });
   });
 
   describe('#value', function() {
@@ -153,34 +173,6 @@ describe('Future API', function() {
 
   it('should have flatMap', function() {
     expect(future).to.have.property('flatMap');
-  });
-
-  describe('#forEach', function() {
-    it('should have forEach', function() {
-      expect(future).to.have.property('forEach');
-    });
-
-    it('should be called on success', function(done) {
-      future.forEach(function(value) {
-        expect(value).to.eql(SUCCESS);
-        done();
-      });
-
-      future.fulfill(SUCCESS);
-    });
-
-    it('should not be called on error', function(done) {
-      var spy = chai.spy(function() {});
-
-      future.forEach(spy);
-
-      future.then(null, function() {
-        expect(spy).to.have.been.not_called;
-        done();
-      });
-
-      future.reject(ERROR);
-    });
   });
 
   describe('#map', function() {
