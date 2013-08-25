@@ -134,7 +134,7 @@ describe('Future API', function() {
         expect(spy).to.have.been.not_called;
         done();
       });
-      
+
       future.reject(ERROR);
       other.reject(ERROR);
     });
@@ -187,8 +187,32 @@ describe('Future API', function() {
     expect(future).to.have.property('mapTo');
   });
 
-  it('should have onFailure', function() {
-    expect(future).to.have.property('onFailure');
+  describe('#onFailure', function() {
+    it('should have onFailure', function() {
+      expect(future).to.have.property('onFailure');
+    });
+
+    it('should be called on reject', function(done) {
+      future.onFailure(function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
+
+      future.reject(ERROR);
+    });
+
+    it('should not be called on success', function(done) {
+      var spy = chai.spy(function() {});
+
+      future.onFailure(spy);
+
+      future.then(function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
   });
 
   it('should have onSuccess', function() {
