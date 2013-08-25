@@ -159,9 +159,53 @@ describe('Future API', function() {
     });
   });
 
-  it('should have filter', function() {
-    expect(future).to.have.property('filter');
+  describe('#filter', function() {
+    it('should have filter', function() {
+      expect(future).to.have.property('filter');
+    });
+
+    it('should be called if the predicate is true', function(done) {
+      var filtered = future.filter(function(value) {
+        return value === SUCCESS;
+      });
+
+      filtered.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should be rejected if the value is not true', function(done) {
+      var filtered = future.filter(function(value) {
+        return value !== SUCCESS;
+      });
+      var spy = chai.spy(function() {});
+
+      filtered.then(null, spy);
+      filtered.then(null, function() {
+        expect(spy).to.have.been.called;
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should be rejected if the parent future is', function(done) {
+      var filtered = future.filter(function(value) {
+        return value === SUCCESS;
+      });
+
+      filtered.then(null, function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
+
+      future.reject(ERROR);
+    });
   });
+
 
   it('should have flatMap', function() {
     expect(future).to.have.property('flatMap');
