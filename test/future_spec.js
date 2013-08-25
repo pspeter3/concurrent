@@ -148,8 +148,32 @@ describe('Future API', function() {
     expect(future).to.have.property('flatMap');
   });
 
-  it('should have forEach', function() {
-    expect(future).to.have.property('forEach');
+  describe('#forEach', function() {
+    it('should have forEach', function() {
+      expect(future).to.have.property('forEach');
+    });
+
+    it('should be called on success', function(done) {
+      future.forEach(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+    });
+
+    it('should not be called on error', function(done) {
+      var spy = chai.spy(function() {});
+
+      future.forEach(spy);
+
+      future.then(null, function() {
+        expect(spy).to.have.been.not_called;
+        done();
+      });
+
+      future.reject(ERROR);
+    });
   });
 
   describe('#map', function() {
