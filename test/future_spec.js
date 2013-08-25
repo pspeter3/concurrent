@@ -331,10 +331,6 @@ describe('Future API', function() {
     });
   });
 
-  it('should have withFilter', function() {
-    expect(future).to.have.property('withFilter');
-  });
-
   describe('#zip', function() {
     it('should have zip', function() {
       expect(future).to.have.property('zip');
