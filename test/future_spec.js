@@ -55,6 +55,51 @@ describe('Future API', function() {
     });
   });
 
+  describe('#convert', function() {
+    it('should have convert', function() {
+      expect(future).to.have.property('convert');
+    });
+
+    it('should have reject on error', function(done) {
+      var async = function(callback) {
+        callback(ERROR);
+      };
+
+      async(future.convert());
+
+      future.then(null, function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
+    });
+
+    it('should fulfill with one value', function(done) {
+      var async = function(callback) {
+        callback(null, SUCCESS);
+      };
+
+      async(future.convert());
+
+      future.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+    });
+
+    it('should fulfill with multiple values', function(done) {
+      var async = function(callback) {
+        callback(null, LEFT, RIGHT);
+      };
+
+      async(future.convert());
+
+      future.then(function(value) {
+        expect(value).to.eql([LEFT, RIGHT]);
+        done();
+      });
+    });
+  });
+
   describe('#ready', function() {
     it('should have ready', function() {
       expect(future).to.have.property('ready');
