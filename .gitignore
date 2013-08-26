@@ -19,3 +19,8 @@ node_modules
 ### Sublime ###
 
 *.sublime*
+
+### Documentation ###
+
+doc
+.grunt

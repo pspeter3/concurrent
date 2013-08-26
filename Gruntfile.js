@@ -6,8 +6,15 @@ module.exports = function(grunt) {
         expr: true
       },
       all: ['Gruntfile.js', 'index.js', 'lib/*.js', 'test/*.js']
+    },
+    'gh-pages': {
+      options: {
+        base: 'doc'
+      },
+      src: ['**']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-gh-pages');
 };
