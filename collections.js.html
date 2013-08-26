@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>collections.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "Users/ppeter/Documents/concurrent//collections.js", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>collections.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Future</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./future&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">next</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./next&#39;</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Iterates over the collection an fulfills with the array</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr      The array to iterate over</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} iterator The function to be called each time</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>The future for the work</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">forEach</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">forEach</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">iterator</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">completed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nx">arr</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">next</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">iterator</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="o">++</span><span class="nx">completed</span> <span class="o">&gt;=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nx">completed</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for every method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} predicate Function to check with</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with true if all matched</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">every</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">every</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">predicate</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for some method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} predicate Function to check with</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with true if any matched</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">some</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">predicate</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for filter method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} predicate Function to check with</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with all that matched</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">filter</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">predicate</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">elements</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nx">elements</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for map method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} transform Function to map with</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with mapped elements</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">elements</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">transform</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">));</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nx">elements</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for reverse method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array} arr  The array to reverse</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>The future with the reverse list</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">reverse</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reverse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">elements</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nx">elements</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for reduce method</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} transform Function to reduce with</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Object}   initial   Optional initial value</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with reduced value</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">reduce</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reduce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">accumulator</span><span class="p">,</span> <span class="nx">list</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">accumulator</span> <span class="o">=</span> <span class="nx">initial</span><span class="p">;</span>
+    <span class="nx">list</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">accumulator</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="nx">list</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">accumulator</span> <span class="o">=</span> <span class="nx">transform</span><span class="p">(</span><span class="nx">accumulator</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">compute</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">fulfill</span><span class="p">(</span><span class="nx">accumulator</span><span class="p">);</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">future</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">reason</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">future</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Proxy for reduceRight method.
+The method inverses the array and then reduces it</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Array}    arr       Array to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Function} transform Function to reduce with</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>{Object}   initial   Optional initial value</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">Future</span>
+      <span>Future fulfilled with reduced value</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">reduceRight</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reduceRight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">reverse</span><span class="p">(</span><span class="nx">arr</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">elements</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">reduce</span><span class="p">(</span><span class="nx">elements</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
