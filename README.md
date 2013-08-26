@@ -3,6 +3,30 @@ Concurrent
 
 Promises/A+ with Scala awesomeness [![Build Status](https://travis-ci.org/pspeter3/concurrent.png)](https://travis-ci.org/pspeter3/concurrent)
 
+Examples
+--------
+
+### Simple Promise
+
+Concurrent supports the a bare bones promise implementation that supports
+`then(onFulfilled, onRejected)`, `fulfill(value)`, `reject(reason)`.
+
+```js
+var Promise = require('concurrent').Promise;
+
+var success = new Promise();
+success.then(function(value) {
+  console.log(value); // 'success'
+});
+success.fulfill('success');
+
+var failure = new Promise();
+failure.then(null, function(reason) {
+  console.log(reason); // 'failure'
+});
+failure.reject('failure');
+```
+
 Credits
 -------
 
