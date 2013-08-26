@@ -8,7 +8,7 @@ var expect = chai.expect;
 var list = [];
 for (var i = 0; i < 1000; i++) {
   list.push(i);
-};
+}
 var err = new Error();
 
 describe('collections', function() {
@@ -78,7 +78,7 @@ describe('collections', function() {
     it('should return true if any match', function(done) {
       var predicate = function(num) {
         return num === 1;
-      }
+      };
       var some = collections.some(list, predicate);
 
       some.then(function(value) {
@@ -90,7 +90,7 @@ describe('collections', function() {
     it('should return false if none match', function(done) {
       var predicate = function(num) {
         return num === -1;
-      }
+      };
       var some = collections.some(list, predicate);
 
       some.then(function(value) {
@@ -108,7 +108,7 @@ describe('collections', function() {
     it('should filter the elements', function(done) {
       var predicate = function(element) {
         return element > 1;
-      }
+      };
       var filtered = collections.filter(list, predicate);
 
       filtered.then(function(value) {
