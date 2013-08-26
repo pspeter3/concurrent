@@ -31,7 +31,7 @@ describe('Future API', function() {
       future.fulfill(SUCCESS);
       expect(future.isCompleted()).to.be.true;
     });
-  })
+  });
 
   describe('#onComplete', function() {
     it('should have onComplete', function() {
