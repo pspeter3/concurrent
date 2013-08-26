@@ -27,6 +27,68 @@ failure.then(null, function(reason) {
 failure.reject('failure');
 ```
 
+### Futures
+
+Concurrent also provides a Future class which inherits from Promise. It has a
+lot of syntactic sugar on top of the Promises/A+ spec based on the Scala Future
+API.
+
+```js
+var Future = require('concurrent').Future;
+
+var success = new Future();
+success.onComplete(function(result) {
+  console.log(result; // 'success'
+});
+success.fulfill('success');
+
+var failure = new Future();
+failure.onComplete(function(result) {
+  console.log(result); // 'failure'
+});
+failure.reject('failure');
+```
+
+### Collections
+
+Concurrent also provides a collections library which gives a lot of the standard
+iterators. All the iterators are performed asynchronously and return Futures.
+The following methods are supported:
+
+- `forEach`
+- `every`
+- `some`
+- `filter`
+- `map`
+- `reverse`
+- `reduce`
+- `reduceRight`
+
+### Working with existing callbacks
+
+Futures also have support for working with existing callback style libraries by
+using the `convert` method which returns a callback handler.
+
+```js
+var Future = require('concurrent').Future;
+var request = require('request');
+
+var google = new Future();
+google.map(function(value) {
+  var body = value[1]; // Request returns a response and a body
+  console.log(body); // HTML for http://www.google.com
+});
+request('http://www.google.com', google.convert());
+```
+
+### Working with other promise implementations
+
+Since concurrent implements the Promises/A+ spec, it should work with other
+libraries that implement the spec. Also, the Future class internally does not
+expect any method beyond `then`, `fulfill`, and `reject` so the prototype
+methods can be merged into other implementations as long as they have those
+three methods.
+
 Credits
 -------
 
@@ -38,6 +100,7 @@ like to thank:
 - [cujos/when](https://github.com/cujojs/when) for fully featured examples
 - [aheckmann/mpromise](https://github.com/aheckmann/mpromise) for node.js specific implementation
 - [promises-aplus/promises-tests](https://github.com/promises-aplus/promises-tests) for the test suite
+- [Scala Futures](http://www.scala-lang.org/api/current/index.html#scala.concurrent.Future) For API sugar
 
 License
 -------
