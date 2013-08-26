@@ -27,6 +27,8 @@ failure.then(null, function(reason) {
 failure.reject('failure');
 ```
 
+[Documentation](http://pspeter3.com/concurrent/promise.js.html)
+
 ### Futures
 
 Concurrent also provides a Future class which inherits from Promise. It has a
@@ -49,6 +51,8 @@ failure.onComplete(function(result) {
 failure.reject('failure');
 ```
 
+[Documentation](http://pspeter3.com/concurrent/future.js.html)
+
 ### Collections
 
 Concurrent also provides a collections library which gives a lot of the standard
@@ -63,6 +67,8 @@ The following methods are supported:
 - `reverse`
 - `reduce`
 - `reduceRight`
+
+[Documentation](http://pspeter3.com/concurrent/collections.js.html)
 
 ### Working with existing callbacks
 
