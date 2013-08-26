@@ -6,6 +6,12 @@ module.exports = function(grunt) {
         expr: true
       },
       all: ['Gruntfile.js', 'index.js', 'lib/*.js', 'test/*.js']
+    },
+    'gh-pages': {
+      options: {
+        base: 'doc'
+      },
+      src: ['**']
     }
   });
 
