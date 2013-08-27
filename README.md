@@ -138,7 +138,7 @@ Overview
 
 ### Simple Promise
 
-Concurrent supports the a bare bones promise implementation that supports
+Concurrent supports the bare bones Promise implementation that supports
 `then(onFulfilled, onRejected)`, `fulfill(value)`, `reject(reason)`.
 
 ```js
@@ -217,7 +217,7 @@ google.map(function(value) {
 request('http://www.google.com', google.convert());
 ```
 
-### Working with other promise implementations
+### Working with other Promise implementations
 
 Since concurrent implements the Promises/A+ spec, it should work with other
 libraries that implement the spec. Also, the Future class internally does not
@@ -235,8 +235,7 @@ as an example of using the libary in the browser.
 Credits
 -------
 
-There was a lot of inspiration for this project and getting it done. I would
-like to thank:
+A lot of people had a hand in inspiring this project and helping getting it done. I'd like to thank:
 
 - [@brikis98](https://github.com/brikis98) for helping me come up with the idea
 - [Promises, understanding by doing](http://modernjavascript.blogspot.com/2013/08/promisesa-understanding-by-doing.html) for the initial promise spec
