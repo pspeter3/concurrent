@@ -15,7 +15,7 @@
     module.exports = factory();
   } else {
     // Browser globals (root is window)
-    root.returnExports = factory();
+    root.concurrent = factory();
   }
 }(this, function() {
 /**
@@ -112,8 +112,8 @@ var handle = function(promise, state, fn) {
 };
 
 /**
- * Promise
- * @class Promise implementing the Promises/A+ Specification
+ * Promise implementing the Promises/A+ Specification
+ * @class
  */
 var Promise = function() {
   this.state = State.PENDING;
@@ -168,7 +168,8 @@ var util = require('util');
 
 /**
  * Future
- * @class Future class matchin Promises/A+ Spec and Scala API
+ * Future class matchin Promises/A+ Spec and Scala API
+ * @class
  */
 var Future = function() {
   Promise.call(this);
@@ -407,6 +408,8 @@ Future.sequence = function(tasks) {
 var Future = require('./future');
 var next = require('./next');
 
+var collections = {};
+
 /**
  * Iterates over the collection an fulfills with the array
  * 
@@ -414,7 +417,7 @@ var next = require('./next');
  * @param  {Function} iterator The function to be called each time
  * @return {Future}            The future for the work
  */
-var forEach = exports.forEach = function(arr, iterator) {
+var forEach = collections.forEach = function(arr, iterator) {
   var future = new Future();
   var completed = 0;
 
@@ -442,7 +445,7 @@ var forEach = exports.forEach = function(arr, iterator) {
  * @param  {Function} predicate Function to check with
  * @return {Future}             Future fulfilled with true if all matched
  */
-var every = exports.every = function(arr, predicate) {
+var every = collections.every = function(arr, predicate) {
   var future = new Future();
 
   var compute = forEach(arr, function(element, index, arr) {
@@ -467,7 +470,7 @@ var every = exports.every = function(arr, predicate) {
  * @param  {Function} predicate Function to check with
  * @return {Future}             Future fulfilled with true if any matched
  */
-var some = exports.some = function(arr, predicate) {
+var some = collections.some = function(arr, predicate) {
   var future = new Future();
 
   var compute = forEach(arr, function(element, index, arr) {
@@ -492,7 +495,7 @@ var some = exports.some = function(arr, predicate) {
  * @param  {Function} predicate Function to check with
  * @return {Future}             Future fulfilled with all that matched
  */
-var filter = exports.filter = function(arr, predicate) {
+var filter = collections.filter = function(arr, predicate) {
   var future = new Future();
   var elements = [];
 
@@ -518,7 +521,7 @@ var filter = exports.filter = function(arr, predicate) {
  * @param  {Function} transform Function to map with
  * @return {Future}             Future fulfilled with mapped elements
  */
-var map = exports.map = function(arr, transform) {
+var map = collections.map = function(arr, transform) {
   var future = new Future();
   var elements = [];
 
@@ -541,7 +544,7 @@ var map = exports.map = function(arr, transform) {
  * @param  {Array} arr  The array to reverse
  * @return {Future}     The future with the reverse list
  */
-var reverse = exports.reverse = function(arr) {
+var reverse = collections.reverse = function(arr) {
   var future = new Future();
   var elements = [];
 
@@ -566,7 +569,7 @@ var reverse = exports.reverse = function(arr) {
  * @param  {Object}   initial   Optional initial value
  * @return {Future}             Future fulfilled with reduced value
  */
-var reduce = exports.reduce = function(arr, transform, initial) {
+var reduce = collections.reduce = function(arr, transform, initial) {
   var future = new Future();
   var accumulator, list;
 
@@ -600,7 +603,7 @@ var reduce = exports.reduce = function(arr, transform, initial) {
  * @param  {Object}   initial   Optional initial value
  * @return {Future}             Future fulfilled with reduced value
  */
-var reduceRight = exports.reduceRight = function(arr, transform, initial) {
+var reduceRight = collections.reduceRight = function(arr, transform, initial) {
   return reverse(arr).then(function(elements) {
     return reduce(elements, transform, initial);
   });
