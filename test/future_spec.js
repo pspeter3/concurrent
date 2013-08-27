@@ -98,6 +98,19 @@ describe('Future API', function() {
         done();
       });
     });
+
+    it('should fulfill with multiple values and keys', function(done) {
+      var async = function(callback) {
+        callback(null, LEFT, RIGHT);
+      };
+
+      async(future.convert(['left', ['right']]));
+
+      future.then(function(value) {
+        expect(value).to.eql({left: LEFT, right: RIGHT});
+        done();
+      });
+    });
   });
 
   describe('#ready', function() {
