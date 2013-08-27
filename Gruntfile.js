@@ -26,6 +26,11 @@ module.exports = function(grunt) {
         dest: './browser/concurrent.js'
       }
     },
+    shell: {
+      docs: {
+        command: 'docker -i lib -o doc'
+      }
+    },
     'gh-pages': {
       options: {
         base: 'doc'
@@ -36,5 +41,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-gh-pages');
 };
