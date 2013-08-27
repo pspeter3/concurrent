@@ -15,9 +15,19 @@
     module.exports = factory();
   } else {
     // Browser globals (root is window)
-    root.concurrent = factory();
+    root.returnExports = factory();
   }
 }(this, function() {
+/**
+ * Executes a function asynchronously. Prefers setImmediate but will fallback to
+ * setTimeout for older browers.
+ *
+ * @type {Function}
+ * @private
+ */
+var next = setImmediate || function(fn) {
+  setTimeout(fn, 0);
+};
 /**
  * Promises states according to the A+ Specification
  *
