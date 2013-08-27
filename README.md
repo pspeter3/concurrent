@@ -1,9 +1,61 @@
 Concurrent
 ==========
 
-Promises/A+ with Scala awesomeness [![Build Status](https://travis-ci.org/pspeter3/concurrent.png)](https://travis-ci.org/pspeter3/concurrent)
+Promises/A+ with Scala Awesomeness [![Build Status](https://travis-ci.org/pspeter3/concurrent.png)](https://travis-ci.org/pspeter3/concurrent)
 
 Examples
+--------
+
+```js
+var Future = require('concurrent').Future;
+var request = require('request');
+
+var req = function(options) {
+  var future = new Future();
+  request(options, future.convert(['res', 'body']));
+  return future;
+};
+
+/**
+ * Example #1: Simple Async Call
+ */
+// Fetch Google with a SLA
+var google = req('http://google.com').ready(1000);
+
+// Fetch the status
+var status = google.map(function(value) {
+  return value.res.statusCode;
+});
+
+// Log the final result
+status.onSuccess(function(statusCode) {
+  console.log(statusCode);
+});
+
+/**
+ * Examples #2: Parallel Calls
+ */
+var duckDuckGo = req('http://duckduckgo.com');
+var bingOrYahoo = req('http://bing.com').fallbackTo(req('http://yahoo.com'));
+
+var asArray = Future.sequence([google, duckDuckGo, bingOrYahoo]);
+
+asArray.onSuccess(function(values) {
+  console.log(values);
+});
+
+var asObject = Future.sequence({
+  google: google,
+  duckDuckGo: duckDuckGo,
+  bingOrYahoo: bingOrYahoo
+});
+
+var recoverable = asObject.recover({
+  promises: 'A+'
+});
+```
+
+Overview
 --------
 
 ### Simple Promise

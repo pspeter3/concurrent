@@ -98,6 +98,19 @@ describe('Future API', function() {
         done();
       });
     });
+
+    it('should fulfill with multiple values and keys', function(done) {
+      var async = function(callback) {
+        callback(null, LEFT, RIGHT);
+      };
+
+      async(future.convert(['left', ['right']]));
+
+      future.then(function(value) {
+        expect(value).to.eql({left: LEFT, right: RIGHT});
+        done();
+      });
+    });
   });
 
   describe('#ready', function() {
@@ -393,12 +406,17 @@ describe('Future API', function() {
   });
 
   describe('#zip', function() {
+    var other;
+
+    beforeEach(function() {
+      other = new Future();
+    });
+
     it('should have zip', function() {
       expect(future).to.have.property('zip');
     });
 
     it('should combine two futures into a tuple', function(done) {
-      var other = new Future();
       var zipped = future.zip(other);
 
       zipped.then(function(tuple) {
@@ -411,7 +429,6 @@ describe('Future API', function() {
     });
 
     it('should not be called if the left future fails', function(done) {
-      var other = new Future();
       var zipped = future.zip(other);
       var spy = chai.spy(function() {});
 
@@ -427,7 +444,6 @@ describe('Future API', function() {
     });
 
     it('should not be called if the right future fails', function(done) {
-      var other = new Future();
       var zipped = future.zip(other);
       var spy = chai.spy(function() {});
 
@@ -440,6 +456,58 @@ describe('Future API', function() {
 
       future.fulfill(SUCCESS);
       other.reject(ERROR);
+    });
+  });
+
+  describe('#sequence', function() {
+    var other;
+
+    beforeEach(function() {
+      other = new Future();
+    });
+
+    it('should have sequence', function() {
+      expect(Future).to.have.property('sequence');
+    });
+
+    it('should reject if one future rejects', function(done) {
+      var sequenced = Future.sequence([future, other]);
+
+      sequenced.then(null, function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
+
+      future.fulfill(SUCCESS);
+      other.reject(ERROR);
+    });
+
+    it('should return the results in order', function(done) {
+      var sequenced = Future.sequence([future, other]);
+
+      sequenced.then(function(value) {
+        expect(value).to.eql([LEFT, RIGHT]);
+        done();
+      });
+
+      other.fulfill(RIGHT);
+      future.fulfill(LEFT);
+
+    });
+
+    it('should assing the results to the keys', function(done) {
+      var sequenced = Future.sequence({
+        left: future,
+        right: other
+      });
+
+      sequenced.then(function(value) {
+        expect(value).to.eql({left: LEFT, right: RIGHT});
+        done();
+      });
+
+      future.fulfill(LEFT);
+      other.fulfill(RIGHT);
     });
   });
 });
