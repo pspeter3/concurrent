@@ -25,7 +25,7 @@
  * @type {Function}
  * @private
  */
-var next = setImmediate || function(fn) {
+var next = typeof setImmediate === 'function' ? setImmediate : function(fn) {
   setTimeout(fn, 0);
 };
 
