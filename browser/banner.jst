@@ -15,7 +15,7 @@
     module.exports = factory();
   } else {
     // Browser globals (root is window)
-    root.returnExports = factory();
+    root.concurrent = factory();
   }
 }(this, function() {
 /**
@@ -51,3 +51,4 @@ var util = {
     });
   }
 };
+

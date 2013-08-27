@@ -15,7 +15,7 @@
     module.exports = factory();
   } else {
     // Browser globals (root is window)
-    root.returnExports = factory();
+    root.concurrent = factory();
   }
 }(this, function() {
 /**
@@ -51,6 +51,7 @@ var util = {
     });
   }
 };
+
 /**
  * Promises states according to the A+ Specification
  *
@@ -63,8 +64,8 @@ var State = {
   REJECTED: "rejected"
 };
 
-var next = require('./next');
-var State = require('./state');
+
+
 
 /**
  * Resolves the promises asynchronously
@@ -195,9 +196,9 @@ Promise.prototype.reject = function(reason) {
   transition(this, State.REJECTED, reason);
 };
 
-var Promise = require('./promise');
-var State = require('./state');
-var util = require('util');
+
+
+
 
 /**
  * Future
@@ -438,8 +439,8 @@ Future.sequence = function(tasks) {
   return future;
 };
 
-var Future = require('./future');
-var next = require('./next');
+
+
 
 var collections = {};
 

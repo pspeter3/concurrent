@@ -12,14 +12,15 @@ module.exports = function(grunt) {
         banner: grunt.file.read('./browser/banner.jst'),
         footer: grunt.file.read('./browser/footer.jst'),
         process: function(src) {
-          return src.replace('= module.exports =', '=');
+          var noModules = src.replace('= module.exports =', '=')
+          return noModules.replace(/var .+? = require\(.+?\);/g, '');
         }
       },
       dist: {
         src: [
           './lib/state.js',
           './lib/promise.js',
-          './lib/future.js', 
+          './lib/future.js',
           './lib/collections.js'
         ],
         dest: './browser/concurrent.js'
