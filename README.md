@@ -229,7 +229,8 @@ Browsers
 --------
 
 Concurrent can be used in browser environments that support ES5, specifically
-`forEach`, `Array.isArray` and `Object.create`.
+`forEach`, `Array.isArray` and `Object.create`. Look at this [JsFiddle](http://jsfiddle.net/pspeter3/h3MLs/)
+as an example of using the libary in the browser.
 
 Credits
 -------
