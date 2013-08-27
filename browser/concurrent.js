@@ -28,6 +28,29 @@
 var next = setImmediate || function(fn) {
   setTimeout(fn, 0);
 };
+
+/**
+ * Proxy for node's util class taken from the node source code.
+ * https://github.com/joyent/node/blob/master/lib/util.js
+ * 
+ * @type {Object}
+ */
+var util = {
+  isArray: function(ar) {
+    return Array.isArray(ar);
+  },
+  inherits: function(ctor, superCtor) {
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  }
+};
 /**
  * Promises states according to the A+ Specification
  *
