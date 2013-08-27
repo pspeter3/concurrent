@@ -47,6 +47,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('docs', ['shell', 'gh-pages']);
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
