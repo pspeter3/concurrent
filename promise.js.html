@@ -208,7 +208,7 @@
   <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
 </div>
 <div class="dox">
-  <div class="summary"><p>Promise</p>
+  <div class="summary"><p>Promise implementing the Promises/A+ Specification</p>
   </div>
   <div class="body">
   </div>
@@ -257,7 +257,7 @@
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">Promise</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">then</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">onFulfilled</span><span class="p">,</span> <span class="nx">onRejected</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="k">new</span> <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">callbacks</span> <span class="o">=</span> <span class="p">{};</span>
 
   <span class="nx">callbacks</span><span class="p">[</span><span class="nx">State</span><span class="p">.</span><span class="nx">FULFILLED</span><span class="p">]</span> <span class="o">=</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">promise</span><span class="p">,</span> <span class="nx">State</span><span class="p">.</span><span class="nx">FULFILLED</span><span class="p">,</span> <span class="nx">onFulfilled</span><span class="p">);</span>

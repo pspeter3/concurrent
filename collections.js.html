@@ -40,6 +40,8 @@
         <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Future</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./future&#39;</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">next</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./next&#39;</span><span class="p">);</span>
 
+<span class="kd">var</span> <span class="nx">collections</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{};</span>
+
 
 </pre></div>
         </td>
@@ -74,7 +76,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">forEach</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">forEach</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">iterator</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">forEach</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">forEach</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">iterator</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">completed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
@@ -129,7 +131,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">every</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">every</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">every</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">every</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
 
   <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
@@ -181,7 +183,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">some</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">some</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">some</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
 
   <span class="kd">var</span> <span class="nx">compute</span> <span class="o">=</span> <span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
@@ -233,7 +235,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">filter</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">filter</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -286,7 +288,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -333,7 +335,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">reverse</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reverse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">reverse</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">reverse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -388,7 +390,7 @@
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">reduce</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reduce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">reduce</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">reduce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">future</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Future</span><span class="p">();</span>
   <span class="kd">var</span> <span class="nx">accumulator</span><span class="p">,</span> <span class="nx">list</span><span class="p">;</span>
 
@@ -452,7 +454,7 @@ The method inverses the array and then reduces it</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">reduceRight</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">reduceRight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">reduceRight</span> <span class="o">=</span> <span class="nx">collections</span><span class="p">.</span><span class="nx">reduceRight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">reverse</span><span class="p">(</span><span class="nx">arr</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">elements</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">reduce</span><span class="p">(</span><span class="nx">elements</span><span class="p">,</span> <span class="nx">transform</span><span class="p">,</span> <span class="nx">initial</span><span class="p">);</span>
   <span class="p">});</span>
