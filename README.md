@@ -225,6 +225,12 @@ expect any method beyond `then`, `fulfill`, and `reject` so the prototype
 methods can be merged into other implementations as long as they have those
 three methods.
 
+Browsers
+--------
+
+Concurrent can be used in browser environments that support ES5, specifically
+`forEach`, `Array.isArray` and `Object.create`.
+
 Credits
 -------
 
