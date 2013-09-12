@@ -1,6 +1,7 @@
 var chai = require('chai');
 var Future = require('../lib/future');
 var spies = require('chai-spies');
+var ValidationError = require('../lib/errors/validation');
 
 chai.use(spies);
 var expect = chai.expect;
@@ -235,11 +236,9 @@ describe('Future API', function() {
       var filtered = future.filter(function(value) {
         return value !== SUCCESS;
       });
-      var spy = chai.spy(function() {});
 
-      filtered.then(null, spy);
-      filtered.then(null, function() {
-        expect(spy).to.have.been.called;
+      filtered.then(null, function(reason) {
+        expect(reason).to.be.an.instanceof(ValidationError);
         done();
       });
 
