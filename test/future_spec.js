@@ -1,6 +1,7 @@
 var chai = require('chai');
 var Future = require('../lib/future');
 var spies = require('chai-spies');
+var TimeoutError = require('../lib/errors/timeout');
 var ValidationError = require('../lib/errors/validation');
 
 chai.use(spies);
@@ -132,11 +133,9 @@ describe('Future API', function() {
 
     it('should be called with error if it does not succeed', function(done) {
       var readied = future.ready(10);
-      var spy = chai.spy(function() {});
 
-      readied.then(null, spy);
-      readied.then(null, function() {
-        expect(spy).to.have.been.called;
+      readied.then(null, function(reason) {
+        expect(reason).to.be.an.instanceof(TimeoutError);
         done();
       });
     });
