@@ -109,7 +109,10 @@ describe('Future API', function() {
       async(future.convert(['left', ['right']]));
 
       future.then(function(value) {
-        expect(value).to.eql({left: LEFT, right: RIGHT});
+        expect(value).to.eql({
+          left: LEFT,
+          right: RIGHT
+        });
         done();
       });
     });
@@ -500,12 +503,43 @@ describe('Future API', function() {
       });
 
       sequenced.then(function(value) {
-        expect(value).to.eql({left: LEFT, right: RIGHT});
+        expect(value).to.eql({
+          left: LEFT,
+          right: RIGHT
+        });
         done();
       });
 
       future.fulfill(LEFT);
       other.fulfill(RIGHT);
+    });
+  });
+
+  describe('#fulfilled', function() {
+    it('should have fulfilled', function() {
+      expect(Future).to.have.property('fulfilled');
+    });
+
+    it('should fulfill a new future', function(done) {
+      var fulfilled = Future.fulfilled(SUCCESS);
+      fulfilled.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+    });
+  });
+
+  describe('#rejected', function() {
+    it('should have rejected', function() {
+      expect(Future).to.have.property('rejected');
+    });
+
+    it('should reject a new future', function(done) {
+      var rejected = Future.rejected(ERROR);
+      rejected.then(null, function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
     });
   });
 });
