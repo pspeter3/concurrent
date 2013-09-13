@@ -376,6 +376,40 @@ describe('Future API', function() {
     });
   });
 
+  describe('#recoverWith', function() {
+    var fallback = function() {
+      var future = new Future();
+      future.fulfill(RIGHT);
+      return future;
+    };
+
+    it('should have recoverWith', function() {
+      expect(future).to.have.property('recoverWith');
+    });
+
+    it('should be called with the normal future value', function(done) {
+      var recovered = future.recoverWith(fallback);
+
+      recovered.then(function(value) {
+        expect(value).to.eql(LEFT);
+        done();
+      });
+
+      future.fulfill(LEFT);
+    });
+
+    it('should be called with value on error', function(done) {
+      var recovered = future.recoverWith(fallback);
+
+      recovered.then(function(value) {
+        expect(value).to.eql(RIGHT);
+        done();
+      });
+
+      future.reject(LEFT);
+    });
+  });
+
   describe('#transform', function() {
     it('should have transform', function() {
       expect(future).to.have.property('transform');
