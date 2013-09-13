@@ -5,7 +5,7 @@ module.exports = function(grunt) {
       options: {
         expr: true
       },
-      all: ['Gruntfile.js', 'index.js', 'lib/*.js', 'test/*.js']
+      all: ['Gruntfile.js', 'index.js', 'lib/**/*.js', 'test/*.js']
     },
     concat: {
       options: {
@@ -20,6 +20,8 @@ module.exports = function(grunt) {
         src: [
           'lib/state.js',
           'lib/promise.js',
+          'lib/errors/validation.js',
+          'lib/errors/timeout.js',
           'lib/future.js',
           'lib/collections.js'
         ],

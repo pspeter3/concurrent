@@ -198,6 +198,31 @@ Promise.prototype.reject = function(reason) {
 
 
 
+var ValidationError = function(value) {
+  Error.captureStackTrace(this, this);
+  this.value = value;
+  this.message = '' + this.value + ' did not match predicate';
+};
+
+util.inherits(ValidationError, Error);
+
+ValidationError.prototype.name = 'ValidationError';
+
+
+
+var TimeoutError = function(time) {
+  Error.captureStackTrace(this, this);
+  this.time = time;
+  this.message = 'Future did not resolve in ' + this.time + ' ms';
+};
+
+util.inherits(TimeoutError, Error);
+
+TimeoutError.prototype.name = 'TimeoutError';
+
+
+
+
 
 
 /**
@@ -239,7 +264,7 @@ Future.prototype.onComplete = function(callback) {
  *
  * @optional
  * @param {Array} keys The keys for the callback
- * 
+ *
  * @return {Function}  The callback for async
  */
 Future.prototype.convert = function(keys) {
@@ -281,7 +306,11 @@ Future.prototype.ready = function(duration) {
   });
 
   setTimeout(function() {
-    future.reject(new Error('Did not resolve future in ' + duration + ' ms'));
+    try {
+      throw new TimeoutError(duration);
+    } catch (err) {
+      future.reject(err);
+    }
   }, duration);
 
   return future;
@@ -294,17 +323,9 @@ Future.prototype.ready = function(duration) {
  * @return {Future}          The future with the fallback value
  */
 Future.prototype.fallbackTo = function(promise) {
-  var future = new this.constructor();
-
-  this.then(function(value) {
-    future.fulfill(value);
-  }, function() {
-    promise.then(function(value) {
-      future.fulfill(value);
-    });
+  return this.then(null, function(reason) {
+    return promise;
   });
-
-  return future;
 };
 
 /**
@@ -314,19 +335,13 @@ Future.prototype.fallbackTo = function(promise) {
  * @return {Future}             The new future
  */
 Future.prototype.filter = function(predicate) {
-  var future = new this.constructor();
-
-  this.then(function(value) {
-    if (predicate(value)) {
-      return future.fulfill(value);
+  return this.then(function(value) {
+    if (!predicate(value)) {
+      throw new ValidationError(value);
     }
 
-    return future.reject(new Error('Value does not match predicate'));
-  }, function(reason) {
-    future.reject(reason);
+    return value;
   });
-
-  return future;
 };
 
 /**
@@ -376,6 +391,16 @@ Future.prototype.recover = function(value) {
 };
 
 /**
+ * Recovers a future with a function that returns a promise.
+ * 
+ * @param  {Function} callback A function returning a promise
+ * @return {Future}            The new future
+ */
+Future.prototype.recoverWith = function(callback) {
+  return this.then(null, callback);
+};
+
+/**
  * Alias for then
  *
  * @param  {Function} onFulfilled Called when the future succeeds
@@ -391,20 +416,16 @@ Future.prototype.transform = Future.prototype.then;
  * @return {Future}          The new future which will fulfill with the tuple
  */
 Future.prototype.zip = function(promise) {
-  var future = new this.constructor();
-
-  this.then(function(left) {
-    promise.then(function(right) {
-      future.fulfill([left, right]);
+  return this.then(function(left) {
+    return promise.then(function(right) {
+      return [left, right];
     });
   });
-
-  return future;
 };
 
 /**
  * Sequences a list of futures together
- * 
+ *
  * @param  {Object} tasks Either an object or an array of tasks
  * @return {Future}       The future of all the results
  */
@@ -423,7 +444,7 @@ Future.sequence = function(tasks) {
       future.reject(reason);
     });
   };
-  
+
   if (util.isArray(tasks)) {
     results = [];
     length = tasks.length;
@@ -435,10 +456,33 @@ Future.sequence = function(tasks) {
       handle(tasks[key], key);
     }
   }
-  
+
   return future;
 };
 
+/**
+ * Creates a future fulfilled with a value
+ *
+ * @param  {Object} value The value of the future to be fulfilled with
+ * @return {Future}       The fulfilled future
+ */
+Future.fulfilled = function(value) {
+  var future = new Future();
+  future.fulfill(value);
+  return future;
+};
+
+/**
+ * Creates a future rejected with a reason
+ *
+ * @param  {Object} reason The reason the future was rejected
+ * @return {Future}        The rejected future
+ */
+Future.rejected = function(reason) {
+  var future = new Future();
+  future.reject(reason);
+  return future;
+};
 
 
 
