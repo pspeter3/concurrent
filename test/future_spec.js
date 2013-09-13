@@ -494,6 +494,34 @@ describe('Future API', function() {
     });
   });
 
+  describe('#fulfilled', function() {
+    it('should have fulfilled', function() {
+      expect(Future).to.have.property('fulfilled');
+    });
+
+    it('should fulfill a new future', function(done) {
+      var fulfilled = Future.fulfilled(SUCCESS);
+      fulfilled.then(function(value) {
+        expect(value).to.eql(SUCCESS);
+        done();
+      });
+    });
+  });
+
+  describe('#rejected', function() {
+    it('should have rejected', function() {
+      expect(Future).to.have.property('rejected');
+    });
+
+    it('should reject a new future', function(done) {
+      var rejected = Future.rejected(ERROR);
+      rejected.then(null, function(reason) {
+        expect(reason).to.eql(ERROR);
+        done();
+      });
+    });
+  });
+
   describe('#sequence', function() {
     var other;
 
@@ -549,31 +577,34 @@ describe('Future API', function() {
     });
   });
 
-  describe('#fulfilled', function() {
-    it('should have fulfilled', function() {
-      expect(Future).to.have.property('fulfilled');
+  describe('#wrap', function() {
+    it('should have wrap', function() {
+      expect(Future).to.have.property('wrap');
     });
 
-    it('should fulfill a new future', function(done) {
-      var fulfilled = Future.fulfilled(SUCCESS);
-      fulfilled.then(function(value) {
+    it('should wrap a promise', function() {
+      var wrapped = Future.wrap(future);
+      expect(wrapped).to.be.an.instanceof(Future);
+    });
+
+    it('should fulfill properly', function(done) {
+      var wrapped = Future.wrap(future);
+      wrapped.then(function(value) {
         expect(value).to.eql(SUCCESS);
         done();
       });
-    });
-  });
 
-  describe('#rejected', function() {
-    it('should have rejected', function() {
-      expect(Future).to.have.property('rejected');
+      future.fulfill(SUCCESS);
     });
 
-    it('should reject a new future', function(done) {
-      var rejected = Future.rejected(ERROR);
-      rejected.then(null, function(reason) {
+    it('should reject properly', function(done) {
+      var wrapped = Future.wrap(future);
+      wrapped.then(null, function(reason) {
         expect(reason).to.eql(ERROR);
         done();
       });
+
+      future.reject(ERROR);
     });
   });
 });
