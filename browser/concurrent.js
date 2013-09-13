@@ -392,7 +392,7 @@ Future.prototype.recover = function(value) {
 
 /**
  * Recovers a future with a function that returns a promise.
- * 
+ *
  * @param  {Function} callback A function returning a promise
  * @return {Future}            The new future
  */
@@ -421,6 +421,30 @@ Future.prototype.zip = function(promise) {
       return [left, right];
     });
   });
+};
+
+/**
+ * Creates a future fulfilled with a value
+ *
+ * @param  {Object} value The value of the future to be fulfilled with
+ * @return {Future}       The fulfilled future
+ */
+Future.fulfilled = function(value) {
+  var future = new Future();
+  future.fulfill(value);
+  return future;
+};
+
+/**
+ * Creates a future rejected with a reason
+ *
+ * @param  {Object} reason The reason the future was rejected
+ * @return {Future}        The rejected future
+ */
+Future.rejected = function(reason) {
+  var future = new Future();
+  future.reject(reason);
+  return future;
 };
 
 /**
@@ -461,26 +485,18 @@ Future.sequence = function(tasks) {
 };
 
 /**
- * Creates a future fulfilled with a value
+ * Wraps a Promise with a Future
  *
- * @param  {Object} value The value of the future to be fulfilled with
- * @return {Future}       The fulfilled future
+ * @param  {Promise} promise The promise to wrap
+ * @return {Future}          The new future
  */
-Future.fulfilled = function(value) {
+Future.wrap = function(promise) {
   var future = new Future();
-  future.fulfill(value);
-  return future;
-};
-
-/**
- * Creates a future rejected with a reason
- *
- * @param  {Object} reason The reason the future was rejected
- * @return {Future}        The rejected future
- */
-Future.rejected = function(reason) {
-  var future = new Future();
-  future.reject(reason);
+  promise.then(function(value) {
+    future.fulfill(value);
+  }, function(reason) {
+    future.reject(reason);
+  });
   return future;
 };
 
