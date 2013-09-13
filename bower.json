@@ -1,7 +1,7 @@
 {
   "name": "concurrent",
   "main": "browser/concurrent.js",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage": "https://github.com/pspeter3/concurrent",
   "authors": [
     "Phips Peter <pspeter333@gmail.com>"
