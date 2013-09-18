@@ -707,6 +707,10 @@ return {
   State: State,
   Promise: Promise,
   Future: Future,
+  errors: {
+    ValidationError: ValidationError,
+    TimeoutError: TimeoutError
+  },
   collections: collections
 };
 }));
